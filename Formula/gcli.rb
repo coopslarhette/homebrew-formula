@@ -1,4 +1,4 @@
-class Getfilesize < Formula
+class Gcli < Formula
   desc "gcli helps you do stuff, or remember how to do stuff, in the terminal"
   homepage "https://github.com/coopslarhette/gcli"
   url "https://github.com/coopslarhette/gcli/releases/download/0.0.1/gen-cli.tar.gz"
