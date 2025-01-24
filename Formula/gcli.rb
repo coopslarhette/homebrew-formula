@@ -2,47 +2,20 @@ class Gcli < Formula
   desc "gcli helps you do stuff, or remember how to do stuff, in the terminal"
   homepage "https://github.com/coopslarhette/gcli"
   license "MIT"
-
-  livecheck do
-    url :stable
-    strategy :github_latest
+  
+  latest_tag = begin
+    require 'net/http'
+    require 'json'
+    JSON.parse(Net::HTTP.get(URI("https://api.github.com/repos/coopslarhette/gcli/releases/latest")))["tag_name"]
   end
+
+  version latest_tag.sub(/^v/, '')
 
   on_macos do
     if Hardware::CPU.arm?
-      url do
-        require 'net/http'
-        require 'json'
-        
-        latest_release = JSON.parse(Net::HTTP.get(URI("https://api.github.com/repos/coopslarhette/gcli/releases/latest")))
-        asset = latest_release["assets"].find { |a| a["name"] == "gcli-arm64.tar.gz" }
-        asset["browser_download_url"]
-      end
-      sha256 do
-        require 'net/http'
-        require 'json'
-        
-        latest_release = JSON.parse(Net::HTTP.get(URI("https://api.github.com/repos/coopslarhette/gcli/releases/latest")))
-        asset = latest_release["assets"].find { |a| a["name"] == "gcli-arm64.tar.gz" }
-        URI.open(asset["browser_download_url"]).then { |f| Digest::SHA256.file(f).hexdigest }
-      end
+      url "https://github.com/coopslarhette/gcli/releases/download/#{latest_tag}/gcli-arm64.tar.gz"
     else
-      url do
-        require 'net/http'
-        require 'json'
-        
-        latest_release = JSON.parse(Net::HTTP.get(URI("https://api.github.com/repos/coopslarhette/gcli/releases/latest")))
-        asset = latest_release["assets"].find { |a| a["name"] == "gcli-x64.tar.gz" }
-        asset["browser_download_url"]
-      end
-      sha256 do
-        require 'net/http'
-        require 'json'
-        
-        latest_release = JSON.parse(Net::HTTP.get(URI("https://api.github.com/repos/coopslarhette/gcli/releases/latest")))
-        asset = latest_release["assets"].find { |a| a["name"] == "gcli-x64.tar.gz" }
-        URI.open(asset["browser_download_url"]).then { |f| Digest::SHA256.file(f).hexdigest }
-      end
+      url "https://github.com/coopslarhette/gcli/releases/download/#{latest_tag}/gcli-x64.tar.gz"
     end
   end
 
