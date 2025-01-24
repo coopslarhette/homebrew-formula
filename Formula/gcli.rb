@@ -15,6 +15,7 @@ class Gcli < Formula
  end
 
  def install
-   bin.install "gcli"
+   bin.install "gcli-arm64" => "gcli" if Hardware::CPU.arm?
+   bin.install "gcli-x64" => "gcli" if Hardware::CPU.intel?
  end
 end
